@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
   Category.findAll({
     include: [Product],
   })
-    .then((categoryData) => res.json(categoryData))
+    .then((categories) => res.json(categories))
     .catch((err) => res.status(500).json(err));
 });
 router.get('/:id', (req, res) => {
@@ -17,9 +17,37 @@ router.get('/:id', (req, res) => {
     },
     include: [Product],
   })
-    .then((categoryData) => res.json(categoryData))
+    .then((category) => res.json(category))
     .catch((err) => res.status(500).json(err));
 });
+router.post('/', (req, res) => {
+  Category.create(req.body)
+    .then((category) => res.json(category))
+    .catch((err) => res.status(500).json(err));
+});
+router.put('/:id', (req, res) => {
+  Category.update(req.body, {
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((category) => res.status(200).json(category))
+    .catch((err) => res.status(500).json(err));
+});
+router.delete('/:id', (req, res) => {
+  Category.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((category) => res.status(200).json(category))
+    .catch((err) => res.status(500).json(err));
+});
+module.exports = router;
+  
+
+
+
 
 
 
@@ -97,4 +125,3 @@ router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
 });
 
-module.exports = router;
