@@ -2,26 +2,67 @@ const router = require('express').Router();
 const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
-router.get('/', async (req, res) => {
-  try {
-    const categoryData = await Category.findAll({
-      include: [{ model: Product }],
-    });
-    res.status(500).json(categoryData);
-  } catch (err) {
-    res.status(400).json(err);
-  }
-  // find all categories
 
-  router.get('/:id', async (req, res) => {
-    try {
-      const categoryData = await Category.findByPk(req.params.id, {
-        include: [{ model: Product }],
-      });
-      res.status(500).json(categoryData);
-    } catch (err) {
-      res.status(400).json(err);
-    }
+router.get('/', (req, res) => {
+  Category.findAll({
+    include: [Product],
+  })
+    .then((categoryData) => res.json(categoryData))
+    .catch((err) => res.status(500).json(err));
+});
+router.get('/:id', (req, res) => {
+  Category.findOne({
+    where: {
+      id: req.params.id,
+    },
+    include: [Product],
+  })
+    .then((categoryData) => res.json(categoryData))
+    .catch((err) => res.status(500).json(err));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.get('/', async (req, res) => {
+//   try {
+//     const categoryData = await Category.findAll({
+//       include: [{ model: Product }],
+//     });
+//     res.status(500).json(categoryData);
+//   } catch (err) {
+//     res.status(400).json(err);
+//   }
+// });
+//   // find all categories
+
+//   router.get('/:id', async (req, res) => {
+//     try {
+//       const categoryData = await Category.findByPk(req.params.id, {
+//         include: [{ model: Product }],
+//       });
+//       res.status(500).json(categoryData);
+//     } catch (err) {
+//       res.status(400).json(err);
+//     }
     // find one category by its `id` value
 
 
@@ -55,6 +96,5 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
 });
-});
-});
+
 module.exports = router;
